@@ -36,6 +36,7 @@ Please visit https://randomnerdtutorials.com/
 #define POWER_GLITCH_PIN    22
 #define ENTER_KEY_PIN       21
 #define GLITCH_SUCCESS_PIN  15
+#define POWER_READ_PIN      36
 
 // Create webserver on port 80 and websocket at /ws
 AsyncWebServer server(80);
@@ -116,6 +117,8 @@ void setup(){
 
   pinMode(ENTER_KEY_PIN, OUTPUT);
   digitalWrite(ENTER_KEY_PIN, LOW);
+
+  pinMode(POWER_READ_PIN, INPUT);
 
   // Connect to Wi-Fi
   initWiFi();

@@ -77,6 +77,7 @@
       <h2>Glitching State</h2>
       <p class="state">state: <span id="state">%STATE%</span></p>
       <p><button id="button" class="button">Toggle</button></p>
+      <p><button id="button_adc" class="button">Start ADC</button></p>
     </div>
   </div>
 <script>
@@ -113,7 +114,12 @@
   }
   function initButton() {
     document.getElementById('button').addEventListener('click', toggle);
+    document.getElementById('button_adc').addEventListener('click', startADC);
   }
+  function startADC(){
+    websocket.send('start_adc');
+  }
+
   function toggle(){
     websocket.send('toggle');
   }
