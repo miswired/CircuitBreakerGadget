@@ -32,14 +32,12 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
   if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
     data[len] = 0;
-    Serial.println((char*)data);
     if (strcmp((char*)data, "toggle") == 0) {
       g_trigger_state = !g_trigger_state;
       notifyClients();
     }
     if (strcmp((char*)data, "start_adc") == 0) {
-      Serial.println("ADC called");
-      Serial.println(analogRead(POWER_READ_PIN));
+      Serial.println("Got ADC button press");
     }
   }
 }

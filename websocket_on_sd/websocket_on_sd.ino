@@ -5,7 +5,7 @@ This file is licensed under the Creative Commons Attribution-Share Alike 3.0 Unp
 https://creativecommons.org/licenses/by-sa/3.0/deed.en
 
 Attribution: Miswired
-Special thanks goes to Rui Santos and the RandomNerdTutorials site. The work here was inspired by those examples.
+Special thanks goes to Rui Santos and the RandomNerdTutorials site. The work here was inspired by those examples and used with permission.
 Please visit https://randomnerdtutorials.com/
 
     You are free:
@@ -36,7 +36,6 @@ Please visit https://randomnerdtutorials.com/
 #define POWER_GLITCH_PIN    22
 #define ENTER_KEY_PIN       21
 #define GLITCH_SUCCESS_PIN  15
-#define POWER_READ_PIN      36
 
 // Create webserver on port 80 and websocket at /ws
 AsyncWebServer server(80);
@@ -45,6 +44,8 @@ AsyncWebSocket ws("/ws");
 // Globals
 bool g_trigger_state = 0;
 
+String g_test_ssid;
+char ssid_char[30];
 
 
 // Initialize SD Card
@@ -92,7 +93,9 @@ void initSDCard(){
 // Start the wifi module and connect to the configured AP
 // Make sure to set up credentials in the wifi_credentials.h file
 void initWiFi() {
+  Serial.println("Function Called");
   WiFi.mode(WIFI_STA);
+  Serial.println("SSID Begin");
   WiFi.begin(ssid, password);
   Serial.print("Connecting to WiFi ..");
   while (WiFi.status() != WL_CONNECTED) {
@@ -118,11 +121,15 @@ void setup(){
   pinMode(ENTER_KEY_PIN, OUTPUT);
   digitalWrite(ENTER_KEY_PIN, LOW);
 
-  pinMode(POWER_READ_PIN, INPUT);
-
   // Connect to Wi-Fi
-  initWiFi();
   initSDCard();
+
+  //Load config file
+  //config_test();
+
+  Serial.print("Starting WiFi");
+  initWiFi();
+  
 
   initWebSocket();
 
