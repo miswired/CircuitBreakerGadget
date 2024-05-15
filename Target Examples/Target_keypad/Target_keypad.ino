@@ -31,49 +31,61 @@ void setup() {
   // initialize pin registers
   pinMode(LOCKED_LED_PIN, OUTPUT);
   pinMode(UNLOCKED_LED_PIN, OUTPUT);
-  pinMode(ENTER_KEY_PIN, INPUT);
+  pinMode(ENTER_KEY_PIN, INPUT_PULLUP);
 
   //Note, this example expects the pins to be pulled high and low, no pullup needed.
-  pinMode(KEY_1_PIN, INPUT);
-  pinMode(KEY_2_PIN, INPUT);
-  pinMode(KEY_3_PIN, INPUT);
-  pinMode(KEY_4_PIN, INPUT);
+  pinMode(KEY_1_PIN, INPUT_PULLUP);
+  pinMode(KEY_2_PIN, INPUT_PULLUP);
+  pinMode(KEY_3_PIN, INPUT_PULLUP);
+  pinMode(KEY_4_PIN, INPUT_PULLUP);
 
   // Show locked
   digitalWrite(LOCKED_LED_PIN, HIGH);
   digitalWrite(UNLOCKED_LED_PIN, LOW);
+
+  // initialize serial communication at 115200 bits per second:
+  Serial.begin(115200);
+
+  Serial.println("Booted, waiting for key press\n");
 }
 
 void loop() {
-  if(digitalRead(KEY_1_PIN))
+  if(!digitalRead(KEY_1_PIN))
   {
     g_was_the_right_key_pressed = false;
+    Serial.println("Key 1 Pressed\n");
   }
 
-    if(digitalRead(KEY_2_PIN))
+    if(!digitalRead(KEY_2_PIN))
   {
     g_was_the_right_key_pressed = false;
+    Serial.println("Key 2 Pressed\n");
   }
 
   //In this example, we only care if key 3 is pressed, because it's the right key.
-  if(digitalRead(KEY_3_PIN))
+  if(!digitalRead(KEY_3_PIN))
   {
     g_was_the_right_key_pressed = true;
 
     //Do some extra operation to simulate a different execution path, this is NOT realilistic, just for testing
-    float testing=1928.12*272727/0.5782+5;
-    Serial.println(testing);
+    //float testing=1928.12*272727/0.5782+5;
+    //digitalWrite(UNLOCKED_LED_PIN, HIGH);
+    delay(10);
+    //digitalWrite(UNLOCKED_LED_PIN, LOW);
+    Serial.println("Key 3 Pressed\n");
   }
 
-    if(digitalRead(KEY_4_PIN))
+    if(!digitalRead(KEY_4_PIN))
   {
     g_was_the_right_key_pressed = false;
+    Serial.println("Key 4 Pressed\n");
   }
 
   
 
   //Check to see if button is pressed and we should evaluate the password
-  if (digitalRead(ENTER_KEY_PIN)) {
+  if (!digitalRead(ENTER_KEY_PIN)) {
+    Serial.println("Enter Key Pressed\n");
     if(g_was_the_right_key_pressed)
     {
       unlock_system();
@@ -81,12 +93,9 @@ void loop() {
   } 
 }
 
-//The function that should never get called
+
 void unlock_system()
 {
   digitalWrite(LOCKED_LED_PIN, LOW);
   digitalWrite(UNLOCKED_LED_PIN, HIGH);
-
-  //Stay here forever
-  while(true);
 }
